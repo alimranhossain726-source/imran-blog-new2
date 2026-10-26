@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imran Blogs - Tech, AI, Web Dev & Monetization Insights</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#EEF2FF',
+                            100: '#E0E7FF',
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                            700: '#4338CA',
+                        },
+                        accent: {
+                            400: '#22D3EE',
+                            500: '#06B6D4',
+                        },
+                        darkBg: '#0B0F17',
+                        darkCard: '#151D2A',
+                        darkBorder: '#232E42'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+        }
+        .dark .glass-panel {
+            background: rgba(21, 29, 42, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .ad-placeholder-bg {
+            background: repeating-linear-gradient(
+                135deg,
+                rgba(99, 102, 241, 0.04),
+                rgba(99, 102, 241, 0.04) 12px,
+                rgba(6, 182, 212, 0.04) 12px,
+                rgba(6, 182, 212, 0.04) 24px
+            );
+        }
+        .dark .ad-placeholder-bg {
+            background: repeating-linear-gradient(
+                135deg,
+                rgba(35, 46, 66, 0.5),
+                rgba(35, 46, 66, 0.5) 12px,
+                rgba(15, 23, 42, 0.7) 12px,
+                rgba(15, 23, 42, 0.7) 24px
+            );
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-darkBg dark:text-gray-100 flex flex-col min-h-screen">
+
+    <!-- TOP GLOBAL ANNOUNCEMENT / ADMIN BAR -->
+    <div id="top-bar" class="bg-gray-900 text-gray-300 text-xs py-2 px-4 border-b border-gray-800 transition-all">
+        <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-2">
+            <!-- Left Info -->
+            <div class="flex items-center space-x-3">
+                <span class="flex items-center gap-1.5"><i class="fas fa-globe text-accent-500"></i> International Edition</span>
+                <span class="text-gray-700">|</span>
+                <span class="hidden md:inline"><i class="far fa-clock text-gray-400 mr-1"></i> Global Time: <span id="utc-clock">UTC</span></span>
+            </div>
+
+            <!-- Right Info / Admin Status -->
+            <div class="flex items-center space-x-4">
+                <div id="admin-indicator" class="flex items-center space-x-2">
+                    <!-- Dynamic rendering based on login status -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="bg-white dark:bg-darkCard border-b border-gray-200 dark:border-darkBorder sticky top-0 z-40 transition-colors shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <!-- Logo & Brand -->
+            <div class="flex items-center justify-between w-full md:w-auto">
+                <a href="#" onclick="filterCategory('All')" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-500 to-accent-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-brand-500/30">
+                        IB
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black tracking-tight bg-gradient-to-r from-gray-900 via-brand-600 to-accent-500 dark:from-white dark:via-brand-500 dark:to-accent-400 bg-clip-text text-transparent">
+                            Imran Blogs
+                        </span>
+                        <p class="text-[10px] font-bold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Tech, AI & Global Monetization</p>
+                    </div>
+                </a>
+
+                <!-- Mobile Header Actions -->
+                <div class="flex items-center space-x-2 md:hidden">
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline text-amber-400"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="p-2 rounded-lg text-gray-600 dark:text-gray-300">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- HEADER AD BANNER SLOT (DYNAMIC ID: header_banner) -->
+            <div id="ad-slot-header_banner" class="w-full md:w-auto flex justify-center">
+                <!-- Dynamically rendered by renderAdSlots() -->
+            </div>
+        </div>
+
+        <!-- CATEGORIES BAR & TOOLBAR -->
+        <div class="bg-gray-50 dark:bg-darkBg/80 border-t border-gray-200 dark:border-darkBorder">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex flex-col sm:flex-row justify-between items-center gap-3">
+                
+                <!-- Category Tabs -->
+                <div class="flex items-center space-x-1 overflow-x-auto w-full sm:w-auto py-1 text-xs font-semibold" id="category-nav">
+                    <!-- Loaded dynamically -->
+                </div>
+
+                <!-- Right Actions: Search & Theme Toggle -->
+                <div class="flex items-center space-x-3 w-full sm:w-auto justify-end">
+                    <!-- Search Input -->
+                    <div class="relative w-full sm:w-52">
+                        <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Search publications..." class="w-full bg-white dark:bg-darkCard border border-gray-300 dark:border-darkBorder text-xs rounded-xl pl-8 pr-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 transition">
+                        <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-xs"></i>
+                    </div>
+
+                    <!-- Sort Dropdown -->
+                    <select id="sort-select" onchange="renderArticles()" class="bg-white dark:bg-darkCard border border-gray-300 dark:border-darkBorder text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        <option value="latest">Latest First</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+
+                    <!-- Dark Mode Button -->
+                    <button onclick="toggleDarkMode()" title="Toggle Dark/Light Mode" class="hidden md:flex items-center justify-center w-8 h-8 rounded-xl bg-white dark:bg-darkCard border border-gray-200 dark:border-darkBorder text-gray-600 dark:text-gray-300 hover:border-brand-500 transition">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline text-amber-400"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden px-4 py-3 bg-white dark:bg-darkCard border-t border-gray-200 dark:border-darkBorder space-y-2 text-xs">
+                <!-- Mobile Categories Dynamic -->
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN PAGE CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-grow w-full">
+
+        <!-- CATEGORY HEADER TITLE & STATS -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-3 border-b border-gray-200 dark:border-darkBorder gap-2">
+            <div>
+                <h1 id="current-category-heading" class="text-2xl font-black text-gray-900 dark:text-white flex items-center gap-2">
+                    <span class="w-2.5 h-6 bg-gradient-to-b from-brand-500 to-accent-500 rounded-full inline-block"></span>
+                    <span>Global Tech Insights</span>
+                </h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">High-conviction tutorials, monetization blueprints, and software engineering analysis.</p>
+            </div>
+            <div class="text-xs font-semibold text-gray-600 dark:text-gray-400 bg-white dark:bg-darkCard px-3 py-1.5 rounded-full border border-gray-200 dark:border-darkBorder shadow-sm">
+                <span id="article-count" class="text-brand-600 dark:text-accent-400 font-bold">0</span> Articles Published
+            </div>
+        </div>
+
+        <!-- MAIN LAYOUT GRID (LEFT: CONTENT 8 COLS, RIGHT: SIDEBAR 4 COLS) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- LEFT 8 COLUMNS: FEATURED & POST FEED -->
+            <div class="lg:col-span-8 space-y-8">
+
+                <!-- HERO FEATURED ARTICLE -->
+                <div id="featured-article-container">
+                    <!-- Dynamic Featured Post Inserted Here -->
+                </div>
+
+                <!-- IN-FEED AD BANNER SLOT (DYNAMIC ID: in_feed_banner) -->
+                <div id="ad-slot-in_feed_banner" class="w-full">
+                    <!-- Dynamically rendered by renderAdSlots() -->
+                </div>
+
+                <!-- REGULAR POSTS GRID -->
+                <div>
+                    <h3 class="text-lg font-extrabold text-gray-900 dark:text-white mb-4 flex items-center justify-between">
+                        <span>Latest Articles</span>
+                        <span class="text-xs text-brand-600 dark:text-accent-400 font-medium">Updated Daily</span>
+                    </h3>
+                    <div id="posts-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Dynamic Post Cards -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT 4 COLUMNS: SIDEBAR, POPULAR POSTS, ADS & NEWSLETTER -->
+            <div class="lg:col-span-4 space-y-6">
+
+                <!-- SIDEBAR AD SLOT 1 (DYNAMIC ID: sidebar_rect_1) -->
+                <div id="ad-slot-sidebar_rect_1" class="w-full">
+                    <!-- Dynamically rendered -->
+                </div>
+
+                <!-- POPULAR / TRENDING POSTS CARD -->
+                <div class="bg-white dark:bg-darkCard rounded-2xl border border-gray-200 dark:border-darkBorder p-5 shadow-sm">
+                    <h3 class="text-base font-extrabold text-gray-900 dark:text-white pb-3 border-b border-gray-100 dark:border-darkBorder flex items-center gap-2">
+                        <i class="fas fa-fire text-amber-500"></i> Trending Reads
+                    </h3>
+                    <div id="popular-posts-list" class="divide-y divide-gray-100 dark:divide-darkBorder mt-2">
+                        <!-- Dynamic Popular Posts -->
+                    </div>
+                </div>
+
+                <!-- SIDEBAR AD SLOT 2 (DYNAMIC ID: sidebar_rect_2) -->
+                <div id="ad-slot-sidebar_rect_2" class="w-full">
+                    <!-- Dynamically rendered -->
+                </div>
+
+                <!-- GLOBAL NEWSLETTER SUBSCRIPTION CARD -->
+                <div class="bg-gradient-to-br from-brand-600 via-brand-700 to-accent-500 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-20 text-9xl font-black select-none pointer-events-none">
+                        @
+                    </div>
+                    <span class="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-2.5 py-1 rounded-full">Weekly Dispatch</span>
+                    <h3 class="text-xl font-black mt-3 leading-tight">Join 50,000+ Global Engineers & Founders</h3>
+                    <p class="text-xs text-indigo-100 mt-2 leading-relaxed">Receive hand-curated technology breakdowns, Web3 updates, and monetization guides straight to your inbox.</p>
+                    
+                    <form onsubmit="handleSubscribe(event)" class="mt-4 space-y-2">
+                        <input type="email" id="subscribe-email" required placeholder="Enter your work email..." class="w-full bg-white/10 placeholder-indigo-200 border border-white/30 text-xs rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-white">
+                        <button type="submit" class="w-full bg-white text-brand-700 font-bold text-xs py-2.5 rounded-xl shadow hover:bg-opacity-95 transition">
+                            Subscribe Free
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FOOTER AD BANNER SLOT (DYNAMIC ID: footer_banner) -->
+        <div id="ad-slot-footer_banner" class="w-full mt-12">
+            <!-- Dynamically rendered -->
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white dark:bg-darkCard border-t border-gray-200 dark:border-darkBorder mt-12 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Col 1: Branding -->
+                <div class="md:col-span-1 space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white font-black text-base shadow">
+                            IB
+                        </div>
+                        <span class="text-xl font-black text-gray-900 dark:text-white">Imran Blogs</span>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                        An international technology, AI, software architecture, and digital monetization journal serving global creators and remote innovators.
+                    </p>
+                    <div class="flex space-x-3 text-gray-400 text-sm pt-2">
+                        <a href="#" class="hover:text-brand-500 transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="hover:text-brand-500 transition"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="hover:text-brand-500 transition"><i class="fab fa-github"></i></a>
+                        <a href="#" class="hover:text-brand-500 transition"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Categories -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-900 dark:text-white mb-3">Core Topics</h4>
+                    <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-2">
+                        <li><a href="#" onclick="filterCategory('AI & Tech'); return false;" class="hover:text-brand-500 transition">AI & Automation</a></li>
+                        <li><a href="#" onclick="filterCategory('Web Dev'); return false;" class="hover:text-brand-500 transition">Web Development</a></li>
+                        <li><a href="#" onclick="filterCategory('Monetization'); return false;" class="hover:text-brand-500 transition">Ad & Monetization</a></li>
+                        <li><a href="#" onclick="filterCategory('Digital Nomad'); return false;" class="hover:text-brand-500 transition">Digital Nomad</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Quick Links -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-900 dark:text-white mb-3">Admin & Portal</h4>
+                    <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-2">
+                        <li><a href="#" onclick="openLoginModal(); return false;" class="text-brand-600 dark:text-accent-400 font-bold hover:underline"><i class="fas fa-lock text-[10px] mr-1"></i> Admin Login</a></li>
+                        <li><a href="#" onclick="alert('Privacy Policy: Imran Blogs respects visitor privacy with non-intrusive ad placement.'); return false;" class="hover:text-brand-500 transition">Privacy Policy</a></li>
+                        <li><a href="#" onclick="alert('Contact Editor: admin@imranblogs.com'); return false;" class="hover:text-brand-500 transition">Editorial Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Platform Security Note -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-900 dark:text-white mb-3">Ad System Security</h4>
+                    <div class="bg-gray-50 dark:bg-darkBg p-3 rounded-xl border border-gray-200 dark:border-darkBorder space-y-1.5 text-xs text-gray-600 dark:text-gray-300">
+                        <div class="flex items-center space-x-2 text-emerald-500 font-bold">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Password Protected</span>
+                        </div>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400">Ad scripts, banner placements, and post editing are strictly locked to authorized Admin sessions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 dark:border-darkBorder pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 dark:text-gray-400 gap-2">
+                <p>&copy; 2026 Imran Blogs. Built for Global Audience. All rights reserved.</p>
+                <p>Protected Admin & Dynamic Ad Management Portal</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 border-l-4 border-brand-500">
+        <i id="toast-icon" class="fas fa-check-circle text-emerald-400 text-lg"></i>
+        <span id="toast-message" class="text-xs font-bold">Action completed successfully.</span>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 1: ADMIN LOGIN MODAL -->
+    <!-- ========================================================================= -->
+    <div id="login-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex justify-center items-center hidden p-4">
+        <div class="bg-white dark:bg-darkCard rounded-3xl shadow-2xl max-w-md w-full p-6 sm:p-8 relative border border-gray-200 dark:border-darkBorder">
+            <button onclick="closeModal('login-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-lg transition">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 bg-gradient-to-tr from-brand-600 to-accent-500 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-3 shadow-lg shadow-brand-500/30">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3 class="text-xl font-black text-gray-900 dark:text-white">Admin Authentication</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Access Post Editor and Dynamic Ad Manager Panel</p>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Admin Security Password</label>
+                    <div class="relative">
+                        <input type="password" id="admin-password-input" required placeholder="Enter password (default: admin)" class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3.5 py-2.5 text-xs text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xs">
+                            <i class="fas fa-eye" id="pass-eye-icon"></i>
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mt-1">Default password is <code class="bg-gray-100 dark:bg-darkBg px-1 py-0.5 rounded text-brand-500 font-mono">admin</code></p>
+                </div>
+
+                <div id="login-error" class="hidden text-xs text-red-500 font-bold bg-red-50 dark:bg-red-950/40 p-2.5 rounded-xl border border-red-200 dark:border-red-900">
+                    <i class="fas fa-exclamation-circle mr-1"></i> Invalid Password! Access Denied.
+                </div>
+
+                <div class="flex items-center justify-between text-xs pt-1">
+                    <label class="flex items-center text-gray-600 dark:text-gray-400 cursor-pointer">
+                        <input type="checkbox" id="remember-admin" class="rounded border-gray-300 text-brand-600 focus:ring-brand-500 mr-2">
+                        Remember Login Session
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3 rounded-xl shadow-lg shadow-brand-500/30 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-key"></i> Unlock Admin Panel
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 2: AD MANAGER MODAL (DYNAMIC CRUD FOR AD SLOTS) -->
+    <!-- ========================================================================= -->
+    <div id="ad-manager-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex justify-center items-start hidden p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-darkCard rounded-3xl shadow-2xl max-w-4xl w-full p-6 sm:p-8 relative my-6 border border-gray-200 dark:border-darkBorder">
+            <button onclick="closeModal('ad-manager-modal')" class="absolute top-5 right-5 text-gray-400 hover:text-red-500 text-xl transition">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="flex items-center space-x-3 border-b border-gray-100 dark:border-darkBorder pb-4 mb-6">
+                <div class="w-10 h-10 rounded-xl bg-accent-500 text-white flex items-center justify-center text-lg font-bold shadow">
+                    <i class="fas fa-rectangle-ad"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-extrabold text-gray-900 dark:text-white">Dynamic Ad Slot Manager</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Configure AdSense scripts, custom banners, links & toggle slots ON/OFF live.</p>
+                </div>
+            </div>
+
+            <!-- AD SLOTS TABLE / LIST -->
+            <div class="space-y-4" id="ad-slots-list-container">
+                <!-- Dynamically populated ad editor rows -->
+            </div>
+
+            <!-- ADD NEW CUSTOM AD SLOT BUTTON -->
+            <div class="mt-6 pt-4 border-t border-gray-100 dark:border-darkBorder flex justify-between items-center">
+                <button onclick="openAddNewAdForm()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow">
+                    <i class="fas fa-plus"></i> Create New Ad Slot
+                </button>
+                <button onclick="closeModal('ad-manager-modal')" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs px-4 py-2.5 rounded-xl font-semibold">
+                    Done & Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUB-MODAL: EDIT OR ADD AD SLOT -->
+    <div id="ad-edit-form-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-center items-center hidden p-4">
+        <div class="bg-white dark:bg-darkCard rounded-2xl shadow-2xl max-w-lg w-full p-6 relative border border-gray-200 dark:border-darkBorder">
+            <button onclick="closeModal('ad-edit-form-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-lg">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h4 id="ad-form-title" class="text-lg font-bold text-gray-900 dark:text-white mb-4">Edit Ad Slot</h4>
+
+            <form onsubmit="handleSaveAdSlot(event)" class="space-y-4">
+                <input type="hidden" id="ad-form-id">
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Slot Name / Identifier *</label>
+                    <input type="text" id="ad-form-name" required class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3.5 py-2 text-xs text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Target Placement *</label>
+                        <select id="ad-form-placement" required class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white">
+                            <option value="header_banner">Header (728x90 Leaderboard)</option>
+                            <option value="in_feed_banner">In-Feed (Native Banner)</option>
+                            <option value="in_article_banner">In-Article (Read Modal)</option>
+                            <option value="sidebar_rect_1">Sidebar Top (300x250)</option>
+                            <option value="sidebar_rect_2">Sidebar Bottom (300x250)</option>
+                            <option value="footer_banner">Footer Banner (728x90)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Ad Type *</label>
+                        <select id="ad-form-type" onchange="toggleAdTypeFields()" required class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white">
+                            <option value="custom">Custom Banner Image + Link</option>
+                            <option value="script">HTML / JS Code (Google AdSense / Ezoic)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Fields for Custom Image Banner -->
+                <div id="ad-field-custom" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Banner Image URL</label>
+                        <input type="url" id="ad-form-img" placeholder="https://..." class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Destination Click URL</label>
+                        <input type="url" id="ad-form-link" placeholder="https://..." class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white">
+                    </div>
+                </div>
+
+                <!-- Fields for Script Code -->
+                <div id="ad-field-script" class="hidden space-y-1">
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">HTML / Script Ad Tag</label>
+                    <textarea id="ad-form-html" rows="4" placeholder="<script async src='...'></script>" class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3 py-2 text-xs font-mono text-gray-900 dark:text-white"></textarea>
+                </div>
+
+                <div class="flex items-center space-x-2 pt-2">
+                    <input type="checkbox" id="ad-form-enabled" checked class="rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+                    <label for="ad-form-enabled" class="text-xs font-bold text-gray-800 dark:text-gray-200">Enable this Ad Slot Live</label>
+                </div>
+
+                <div class="flex justify-end space-x-2 pt-4 border-t border-gray-100 dark:border-darkBorder">
+                    <button type="button" onclick="closeModal('ad-edit-form-modal')" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-xl text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-md">Save Ad Slot</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 3: CREATE / EDIT ARTICLE (ADMIN ONLY) -->
+    <!-- ========================================================================= -->
+    <div id="post-editor-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex justify-center items-center hidden p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-darkCard rounded-3xl shadow-2xl max-w-2xl w-full p-6 relative my-8 border border-gray-200 dark:border-darkBorder">
+            <button onclick="closeModal('post-editor-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-xl transition">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <h3 id="post-editor-title" class="text-xl font-extrabold text-gray-900 dark:text-white border-b border-gray-100 dark:border-darkBorder pb-3 mb-5 flex items-center gap-2">
+                <i class="fas fa-pen-nib text-brand-500"></i> Write New Article
+            </h3>
+
+            <form id="post-editor-form" onsubmit="handleSaveArticle(event)" class="space-y-4">
+                <input type="hidden" id="edit-post-id">
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Article Title *</label>
+                    <input type="text" id="post-input-title" required class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-brand-500" placeholder="e.g. Next-Gen Web Development Frameworks 2026">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Category *</label>
+                        <select id="post-input-category" required class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-brand-500">
+                            <option value="AI & Tech">AI & Tech</option>
+                            <option value="Web Dev">Web Dev</option>
+                            <option value="Monetization">Monetization</option>
+                            <option value="Digital Nomad">Digital Nomad</option>
+                            <option value="World Affairs">World Affairs</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Author Name *</label>
+                        <input type="text" id="post-input-author" required class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-brand-500" placeholder="Imran Hossain">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Featured Image URL</label>
+                        <input type="url" id="post-input-image" class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-brand-500" placeholder="https://images.unsplash.com/...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Tags (Comma separated)</label>
+                        <input type="text" id="post-input-tags" class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-brand-500" placeholder="AI, Cloud, JavaScript">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Summary / Hook Excerpt *</label>
+                    <textarea id="post-input-excerpt" rows="2" required class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-brand-500" placeholder="Brief 2-line summary..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Full Content (Markdown/HTML Supported) *</label>
+                    <textarea id="post-input-content" rows="6" required class="w-full bg-gray-50 dark:bg-darkBg border border-gray-300 dark:border-darkBorder rounded-xl px-3.5 py-2 text-xs focus:ring-2 focus:ring-brand-500" placeholder="Write the full story here..."></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-2 pt-4 border-t border-gray-100 dark:border-darkBorder">
+                    <button type="button" onclick="closeModal('post-editor-modal')" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-xl text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-lg shadow-brand-500/30">Publish Article</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 4: FULL POST READER MODAL -->
+    <!-- ========================================================================= -->
+    <div id="read-post-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex justify-center items-start hidden p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-darkCard rounded-3xl shadow-2xl max-w-3xl w-full p-6 sm:p-8 relative my-8 border border-gray-200 dark:border-darkBorder">
+            <button onclick="closeModal('read-post-modal')" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-gray-100 dark:bg-darkBg text-gray-500 dark:text-gray-300 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition">
+                <i class="fas fa-times text-base"></i>
+            </button>
+            
+            <div id="read-post-body">
+                <!-- Dynamically injected full post view -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 5: DELETE CONFIRMATION -->
+    <!-- ========================================================================= -->
+    <div id="delete-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex justify-center items-center hidden p-4">
+        <div class="bg-white dark:bg-darkCard rounded-2xl shadow-xl max-w-sm w-full p-6 text-center border border-gray-200 dark:border-darkBorder">
+            <div class="w-12 h-12 bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-trash-alt text-xl"></i>
+            </div>
+            <h4 class="text-lg font-extrabold text-gray-900 dark:text-white mb-1">Delete Post?</h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-5">Are you sure you want to permanently remove this article from Imran Blogs?</p>
+            <input type="hidden" id="delete-target-id">
+            <div class="flex justify-center space-x-3">
+                <button onclick="closeModal('delete-modal')" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-xl text-xs font-semibold">Cancel</button>
+                <button onclick="confirmDeleteArticle()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md">Confirm Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION JAVASCRIPT LOGIC -->
+    <script>
+        // Security Password Default Configuration
+        let ADMIN_PASSWORD = "admin";
+        let isAdminLoggedIn = false;
+
+        // Default Initial Ad Slots Data
+        const defaultAdSlots = [
+            {
+                id: 'header_banner',
+                name: 'Header Top Leaderboard',
+                placement: 'header_banner',
+                type: 'custom',
+                enabled: true,
+                imgUrl: 'https://placehold.co/728x90/4F46E5/FFFFFF?text=Sponsor+AdSense+Banner+728x90',
+                linkUrl: 'https://imranblogs.com',
+                htmlCode: ''
+            },
+            {
+                id: 'in_feed_banner',
+                name: 'In-Feed Native Sponsor',
+                placement: 'in_feed_banner',
+                type: 'custom',
+                enabled: true,
+                imgUrl: 'https://placehold.co/900x120/06B6D4/FFFFFF?text=Sponsor+In-Feed+Native+Ad+Placement',
+                linkUrl: 'https://imranblogs.com',
+                htmlCode: ''
+            },
+            {
+                id: 'in_article_banner',
+                name: 'In-Article Inline Ad',
+                placement: 'in_article_banner',
+                type: 'custom',
+                enabled: true,
+                imgUrl: 'https://placehold.co/700x100/6366F1/FFFFFF?text=In-Article+Monetization+AdSlot',
+                linkUrl: 'https://imranblogs.com',
+                htmlCode: ''
+            },
+            {
+                id: 'sidebar_rect_1',
+                name: 'Sidebar Top Rectangle',
+                placement: 'sidebar_rect_1',
+                type: 'custom',
+                enabled: true,
+                imgUrl: 'https://placehold.co/300x250/151D2A/22D3EE?text=Cloud+Hosting+Ad+300x250',
+                linkUrl: 'https://imranblogs.com',
+                htmlCode: ''
+            },
+            {
+                id: 'sidebar_rect_2',
+                name: 'Sidebar Bottom AdSlot',
+                placement: 'sidebar_rect_2',
+                type: 'custom',
+                enabled: true,
+                imgUrl: 'https://placehold.co/300x200/4338CA/FFFFFF?text=SaaS+Tool+Ad+Spot',
+                linkUrl: 'https://imranblogs.com',
+                htmlCode: ''
+            },
+            {
+                id: 'footer_banner',
+                name: 'Footer Leaderboard Banner',
+                placement: 'footer_banner',
+                type: 'custom',
+                enabled: true,
+                imgUrl: 'https://placehold.co/900x90/0F172A/06B6D4?text=Footer+Global+Ad+Slot',
+                linkUrl: 'https://imranblogs.com',
+                htmlCode: ''
+            }
+        ];
+
+        // Default Initial Articles
+        const defaultArticles = [
+            {
+                id: 'post-101',
+                title: 'Building High-Performance Web Apps with Multi-Modal AI Agents in 2026',
+                category: 'AI & Tech',
+                author: 'Imran Hossain',
+                date: 'October 25, 2026',
+                readTime: '5 min read',
+                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80',
+                excerpt: 'How autonomous AI agents are quietly revolutionizing software engineering workflows, code generation, and cloud deployment pipelines.',
+                content: `Artificial Intelligence has evolved far beyond basic chat interfaces into dynamic **Autonomous Agent Ecosystems**. In 2026, software architectures across Silicon Valley and international tech hubs heavily rely on multi-modal reasoning engines.\n\n### Core Engineering Advantages:\n1. **Automated Unit Testing**: AI agents write, test, and refactor code before human review.\n2. **Zero-Latency Edge Execution**: Models run directly on client devices via WebGPU.\n3. **Dynamic Ad & Layout Optimization**: Automated content syndication.\n\nDevelopers who master orchestrating agentic workflows are building products 10x faster with lean engineering teams.`,
+                tags: ['AI', 'SoftwareEngineering', 'WebDev'],
+                likes: 184,
+                comments: [
+                    { name: 'David Miller (USA)', date: '3 hours ago', text: 'Agentic workflows have doubled our team velocity in San Francisco!' },
+                    { name: 'Samiur Rahman (BD)', date: '5 hours ago', text: 'Great article Imran brother! The WebGPU section is super insightful.' }
+                ]
+            },
+            {
+                id: 'post-102',
+                title: 'Maximizing Blog Monetization: Ezoic vs Google AdSense in 2026',
+                category: 'Monetization',
+                author: 'Imran Hossain',
+                date: 'October 22, 2026',
+                readTime: '6 min read',
+                image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1000&q=80',
+                excerpt: 'A comprehensive revenue comparison for international tech publishers seeking optimal RPMs and header bidding performance.',
+                content: `Monetizing international traffic requires balancing reader user experience with optimal ad placement density. Direct header bidding and machine-learning ad placements have raised RPM yields significantly.\n\n### Key Monetization Strategies:\n- **Above-the-fold Leaderboards**: Highest viewability metrics for top advertisers.\n- **In-Article Native Ads**: High engagement during long-form reading sessions.\n- **Sticky Sidebar Banners**: Sustained viewability during page scrolling.`,
+                tags: ['Monetization', 'AdSense', 'DigitalPublishing'],
+                likes: 129,
+                comments: []
+            },
+            {
+                id: 'post-103',
+                title: 'The Modern Digital Nomad: Top European & Asian Tech Hubs',
+                category: 'Digital Nomad',
+                author: 'Elena Vance',
+                date: 'October 18, 2026',
+                readTime: '4 min read',
+                image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=80',
+                excerpt: 'Exploring remote work infrastructure, tax incentives, and community hubs across Lisbon, Bali, and Tokyo.',
+                content: `Distributed global remote work is now the standard default for elite tech companies. Fast fiber internet, flexible nomad visas, and co-working spaces have made remote engineering seamless.`,
+                tags: ['RemoteWork', 'Nomad', 'Lifestyle'],
+                likes: 95,
+                comments: []
+            }
+        ];
+
+        const categories = ['All', 'AI & Tech', 'Web Dev', 'Monetization', 'Digital Nomad', 'World Affairs'];
+
+        // APP STATE
+        let adSlots = [];
+        let articles = [];
+        let activeCategory = 'All';
+        let searchQuery = '';
+
+        // ON LOAD INITIALIZER
+        window.onload = function() {
+            initDarkMode();
+            checkAdminSession();
+            loadAdSlots();
+            loadArticles();
+            renderAdminBar();
+            renderCategories();
+            renderAdSlots();
+            renderArticles();
+            updateClock();
+            setInterval(updateClock, 1000);
+        };
+
+        // UTC Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('utc-clock').textContent = now.toUTCString().replace('GMT', 'UTC');
+        }
+
+        // Dark Mode
+        function initDarkMode() {
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // =========================================================================
+        // ADMIN AUTHENTICATION MANAGEMENT
+        // =========================================================================
+        function checkAdminSession() {
+            const session = localStorage.getItem('imran_admin_logged');
+            if (session === 'true') {
+                isAdminLoggedIn = true;
+            }
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const passInput = document.getElementById('admin-password-input').value;
+            const errElem = document.getElementById('login-error');
+            const remember = document.getElementById('remember-admin').checked;
+
+            if (passInput === ADMIN_PASSWORD) {
+                isAdminLoggedIn = true;
+                if (remember) {
+                    localStorage.setItem('imran_admin_logged', 'true');
+                }
+                errElem.classList.add('hidden');
+                closeModal('login-modal');
+                renderAdminBar();
+                renderArticles();
+                renderAdSlots();
+                showToast('Successfully logged in as Admin!');
+            } else {
+                errElem.classList.remove('hidden');
+            }
+        }
+
+        function handleAdminLogout() {
+            isAdminLoggedIn = false;
+            localStorage.removeItem('imran_admin_logged');
+            renderAdminBar();
+            renderArticles();
+            renderAdSlots();
+            showToast('Logged out of Admin session.');
+        }
+
+        function togglePasswordVisibility() {
+            const input = document.getElementById('admin-password-input');
+            const icon = document.getElementById('pass-eye-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        function renderAdminBar() {
+            const container = document.getElementById('admin-indicator');
+            if (isAdminLoggedIn) {
+                container.innerHTML = `
+                    <span class="bg-emerald-500/20 text-emerald-400 font-bold px-2.5 py-1 rounded-full text-[11px] border border-emerald-500/30 flex items-center gap-1">
+                        <i class="fas fa-check-circle"></i> Admin Active
+                    </span>
+                    <button onclick="openModal('ad-manager-modal')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-2.5 py-1 rounded-lg text-xs transition flex items-center gap-1">
+                        <i class="fas fa-rectangle-ad"></i> Manage Ads
+                    </button>
+                    <button onclick="openCreatePostModal()" class="bg-accent-500 hover:bg-accent-600 text-white font-bold px-2.5 py-1 rounded-lg text-xs transition flex items-center gap-1">
+                        <i class="fas fa-plus"></i> New Post
+                    </button>
+                    <button onclick="handleAdminLogout()" class="bg-gray-800 hover:bg-red-900/60 text-gray-300 hover:text-red-300 font-bold px-2.5 py-1 rounded-lg text-xs border border-gray-700 transition">
+                        Logout
+                    </button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button onclick="openLoginModal()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-3 py-1 rounded-full border border-gray-700 flex items-center gap-1.5 transition text-xs font-semibold">
+                        <i class="fas fa-lock text-brand-500"></i> Admin Login
+                    </button>
+                `;
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('admin-password-input').value = '';
+            document.getElementById('login-error').classList.add('hidden');
+            openModal('login-modal');
+        }
+
+        // =========================================================================
+        // DYNAMIC AD MANAGEMENT SYSTEM (CRUD & RENDER)
+        // =========================================================================
+        function loadAdSlots() {
+            const stored = localStorage.getItem('imran_blogs_ads');
+            if (stored) {
+                try {
+                    adSlots = JSON.parse(stored);
+                } catch(e) {
+                    adSlots = defaultAdSlots;
+                }
+            } else {
+                adSlots = defaultAdSlots;
+                saveAdSlots();
+            }
+        }
+
+        function saveAdSlots() {
+            localStorage.setItem('imran_blogs_ads', JSON.stringify(adSlots));
+        }
+
+        // Render Ads dynamically into target UI containers
+        function renderAdSlots() {
+            const placements = ['header_banner', 'in_feed_banner', 'in_article_banner', 'sidebar_rect_1', 'sidebar_rect_2', 'footer_banner'];
+
+            placements.forEach(placement => {
+                const container = document.getElementById(`ad-slot-${placement}`);
+                if (!container) return;
+
+                const slot = adSlots.find(s => s.placement === placement && s.enabled);
+
+                if (slot) {
+                    let adContentHtml = '';
+                    if (slot.type === 'script' && slot.htmlCode) {
+                        adContentHtml = slot.htmlCode;
+                    } else {
+                        const img = slot.imgUrl || 'https://placehold.co/728x90?text=Advertisement';
+                        const link = slot.linkUrl || '#';
+                        adContentHtml = `
+                            <a href="${link}" target="_blank" rel="noopener" class="block w-full overflow-hidden rounded-2xl group relative border border-gray-200 dark:border-darkBorder shadow-sm">
+                                <img src="${img}" alt="${slot.name}" class="w-full h-auto object-cover max-h-40 group-hover:scale-102 transition duration-300">
+                                <span class="absolute top-1 right-1 bg-black/60 text-white font-mono text-[9px] px-1.5 py-0.5 rounded">AD</span>
+                            </a>
+                        `;
+                    }
+
+                    container.innerHTML = `
+                        <div class="relative w-full">
+                            ${adContentHtml}
+                            ${isAdminLoggedIn ? `
+                                <div class="mt-1 flex justify-end">
+                                    <button onclick="editAdSlot('${slot.id}')" class="text-[10px] bg-brand-600 text-white font-bold px-2 py-0.5 rounded shadow">
+                                        <i class="fas fa-edit mr-1"></i> Edit Ad Slot
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                } else {
+                    // Placeholder when Ad is disabled or missing
+                    if (isAdminLoggedIn) {
+                        container.innerHTML = `
+                            <div class="ad-placeholder-bg w-full py-4 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl flex flex-col items-center justify-center text-center p-3">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Ad Slot Off: ${placement}</span>
+                                <button onclick="openAddNewAdForm('${placement}')" class="bg-gray-800 text-white text-[11px] px-3 py-1 rounded-lg font-bold hover:bg-brand-600 transition">
+                                    + Enable / Add Ad Slot
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML = ''; // Hide completely for regular visitors if disabled
+                    }
+                }
+            });
+
+            renderAdManagerTable();
+        }
+
+        // Render Manager List inside Ad Manager Modal
+        function renderAdManagerTable() {
+            const container = document.getElementById('ad-slots-list-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+            adSlots.forEach(slot => {
+                const card = document.createElement('div');
+                card.className = 'bg-gray-50 dark:bg-darkBg p-4 rounded-2xl border border-gray-200 dark:border-darkBorder flex flex-col md:flex-row justify-between items-start md:items-center gap-3';
+                card.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-extrabold text-sm text-gray-900 dark:text-white">${slot.name}</span>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded ${slot.enabled ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-gray-200 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}">
+                                ${slot.enabled ? 'LIVE ACTIVE' : 'DISABLED'}
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Placement: <code class="text-brand-500 font-mono">${slot.placement}</code> | Type: <strong>${slot.type}</strong></p>
+                    </div>
+                    <div class="flex items-center space-x-2 w-full md:w-auto justify-end">
+                        <button onclick="toggleAdStatus('${slot.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition ${slot.enabled ? 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20' : 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20'}">
+                            ${slot.enabled ? '<i class="fas fa-power-off mr-1"></i> Disable' : '<i class="fas fa-play mr-1"></i> Enable'}
+                        </button>
+                        <button onclick="editAdSlot('${slot.id}')" class="bg-brand-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-brand-700 transition">
+                            <i class="fas fa-edit mr-1"></i> Edit
+                        </button>
+                        <button onclick="deleteAdSlot('${slot.id}')" class="bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-red-200 transition">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleAdStatus(id) {
+            const slot = adSlots.find(s => s.id === id);
+            if (slot) {
+                slot.enabled = !slot.enabled;
+                saveAdSlots();
+                renderAdSlots();
+                showToast(`Ad Slot "${slot.name}" ${slot.enabled ? 'Activated' : 'Disabled'}`);
+            }
+        }
+
+        function editAdSlot(id) {
+            const slot = adSlots.find(s => s.id === id);
+            if (!slot) return;
+
+            document.getElementById('ad-form-id').value = slot.id;
+            document.getElementById('ad-form-name').value = slot.name;
+            document.getElementById('ad-form-placement').value = slot.placement;
+            document.getElementById('ad-form-type').value = slot.type;
+            document.getElementById('ad-form-img').value = slot.imgUrl || '';
+            document.getElementById('ad-form-link').value = slot.linkUrl || '';
+            document.getElementById('ad-form-html').value = slot.htmlCode || '';
+            document.getElementById('ad-form-enabled').checked = slot.enabled;
+
+            document.getElementById('ad-form-title').textContent = 'Edit Ad Slot';
+            toggleAdTypeFields();
+            openModal('ad-edit-form-modal');
+        }
+
+        function openAddNewAdForm(defaultPlacement = 'header_banner') {
+            document.getElementById('ad-form-id').value = '';
+            document.getElementById('ad-form-name').value = '';
+            document.getElementById('ad-form-placement').value = defaultPlacement;
+            document.getElementById('ad-form-type').value = 'custom';
+            document.getElementById('ad-form-img').value = '';
+            document.getElementById('ad-form-link').value = '';
+            document.getElementById('ad-form-html').value = '';
+            document.getElementById('ad-form-enabled').checked = true;
+
+            document.getElementById('ad-form-title').textContent = 'Create New Ad Slot';
+            toggleAdTypeFields();
+            openModal('ad-edit-form-modal');
+        }
+
+        function toggleAdTypeFields() {
+            const type = document.getElementById('ad-form-type').value;
+            if (type === 'custom') {
+                document.getElementById('ad-field-custom').classList.remove('hidden');
+                document.getElementById('ad-field-script').classList.add('hidden');
+            } else {
+                document.getElementById('ad-field-custom').classList.add('hidden');
+                document.getElementById('ad-field-script').classList.remove('hidden');
+            }
+        }
+
+        function handleSaveAdSlot(e) {
+            e.preventDefault();
+            const id = document.getElementById('ad-form-id').value;
+            const name = document.getElementById('ad-form-name').value.trim();
+            const placement = document.getElementById('ad-form-placement').value;
+            const type = document.getElementById('ad-form-type').value;
+            const imgUrl = document.getElementById('ad-form-img').value.trim();
+            const linkUrl = document.getElementById('ad-form-link').value.trim();
+            const htmlCode = document.getElementById('ad-form-html').value.trim();
+            const enabled = document.getElementById('ad-form-enabled').checked;
+
+            if (id) {
+                // Update
+                const idx = adSlots.findIndex(s => s.id === id);
+                if (idx !== -1) {
+                    adSlots[idx] = { id, name, placement, type, imgUrl, linkUrl, htmlCode, enabled };
+                }
+            } else {
+                // Create
+                const newSlot = {
+                    id: 'slot-' + Date.now(),
+                    name,
+                    placement,
+                    type,
+                    imgUrl,
+                    linkUrl,
+                    htmlCode,
+                    enabled
+                };
+                adSlots.push(newSlot);
+            }
+
+            saveAdSlots();
+            renderAdSlots();
+            closeModal('ad-edit-form-modal');
+            showToast('Ad Slot configuration saved successfully!');
+        }
+
+        function deleteAdSlot(id) {
+            if (confirm('Delete this ad slot configuration permanently?')) {
+                adSlots = adSlots.filter(s => s.id !== id);
+                saveAdSlots();
+                renderAdSlots();
+                showToast('Ad slot deleted.');
+            }
+        }
+
+        // =========================================================================
+        // ARTICLE CRUD OPERATIONS
+        // =========================================================================
+        function loadArticles() {
+            const stored = localStorage.getItem('imran_blogs_articles');
+            if (stored) {
+                try {
+                    articles = JSON.parse(stored);
+                } catch(e) {
+                    articles = defaultArticles;
+                }
+            } else {
+                articles = defaultArticles;
+                saveArticles();
+            }
+        }
+
+        function saveArticles() {
+            localStorage.setItem('imran_blogs_articles', JSON.stringify(articles));
+        }
+
+        function renderCategories() {
+            const nav = document.getElementById('category-nav');
+            const mobileNav = document.getElementById('mobile-menu');
+            nav.innerHTML = '';
+            mobileNav.innerHTML = '';
+
+            categories.forEach(cat => {
+                const isActive = activeCategory === cat;
+                
+                // Desktop Tab
+                const btn = document.createElement('button');
+                btn.className = `px-3.5 py-1.5 rounded-xl transition whitespace-nowrap ${
+                    isActive 
+                    ? 'bg-brand-600 text-white font-bold shadow-md shadow-brand-500/20' 
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-darkCard'
+                }`;
+                btn.textContent = cat;
+                btn.onclick = () => filterCategory(cat);
+                nav.appendChild(btn);
+
+                // Mobile Menu Tab
+                const mBtn = document.createElement('button');
+                mBtn.className = `block w-full text-left px-3 py-2 rounded-xl ${
+                    isActive ? 'bg-brand-600 text-white font-bold' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-darkBg'
+                }`;
+                mBtn.textContent = cat;
+                mBtn.onclick = () => {
+                    filterCategory(cat);
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                };
+                mobileNav.appendChild(mBtn);
+            });
+        }
+
+        document.getElementById('mobile-menu-btn').onclick = () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        };
+
+        function filterCategory(cat) {
+            activeCategory = cat;
+            document.getElementById('current-category-heading').innerHTML = `
+                <span class="w-2.5 h-6 bg-gradient-to-b from-brand-500 to-accent-500 rounded-full inline-block"></span>
+                <span>${cat === 'All' ? 'Global Tech Insights' : cat}</span>
+            `;
+            renderCategories();
+            renderArticles();
+        }
+
+        function handleSearch() {
+            searchQuery = document.getElementById('search-input').value.trim().toLowerCase();
+            renderArticles();
+        }
+
+        function renderArticles() {
+            const featuredContainer = document.getElementById('featured-article-container');
+            const gridContainer = document.getElementById('posts-grid');
+            const popularContainer = document.getElementById('popular-posts-list');
+            const countElem = document.getElementById('article-count');
+            const sortVal = document.getElementById('sort-select').value;
+
+            let filtered = articles.filter(post => {
+                const matchesCat = (activeCategory === 'All') || (post.category === activeCategory);
+                const matchesSearch = !searchQuery || 
+                    post.title.toLowerCase().includes(searchQuery) ||
+                    post.content.toLowerCase().includes(searchQuery);
+                return matchesCat && matchesSearch;
+            });
+
+            // Sorting
+            if (sortVal === 'popular') {
+                filtered.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+            }
+
+            countElem.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                featuredContainer.innerHTML = '';
+                gridContainer.innerHTML = `
+                    <div class="col-span-2 bg-white dark:bg-darkCard p-10 rounded-2xl text-center border border-gray-200 dark:border-darkBorder">
+                        <i class="fas fa-search text-4xl text-gray-300 dark:text-gray-600 mb-3"></i>
+                        <h4 class="text-base font-bold text-gray-800 dark:text-gray-200">No Publications Found</h4>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Try resetting your search filter or category selection.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const fallbackImg = 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80';
+
+            // Featured Hero Card (1st post)
+            const hero = filtered[0];
+            featuredContainer.innerHTML = `
+                <div class="bg-white dark:bg-darkCard rounded-3xl border border-gray-200 dark:border-darkBorder overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-0">
+                        <div class="md:col-span-7 relative h-64 md:h-96 overflow-hidden bg-gray-100 dark:bg-darkBg">
+                            <img src="${hero.image || fallbackImg}" onerror="this.src='${fallbackImg}'" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                            <span class="absolute top-4 left-4 bg-brand-600 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-lg">
+                                ${hero.category}
+                            </span>
+                        </div>
+                        <div class="md:col-span-5 p-6 sm:p-8 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-3 text-xs text-gray-500 dark:text-gray-400 mb-3">
+                                    <span><i class="fas fa-user text-brand-500 mr-1"></i> ${hero.author}</span>
+                                    <span>•</span>
+                                    <span><i class="far fa-clock mr-1"></i> ${hero.readTime || '5 min read'}</span>
+                                </div>
+                                <h2 onclick="readArticle('${hero.id}')" class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white group-hover:text-brand-500 dark:group-hover:text-accent-400 transition cursor-pointer leading-snug mb-3">
+                                    ${hero.title}
+                                </h2>
+                                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 line-clamp-3 leading-relaxed">
+                                    ${hero.excerpt}
+                                </p>
+                            </div>
+                            <div class="pt-6 border-t border-gray-100 dark:border-darkBorder flex items-center justify-between mt-6">
+                                <button onclick="readArticle('${hero.id}')" class="text-xs font-bold text-brand-600 dark:text-accent-400 hover:underline flex items-center gap-1.5">
+                                    Read Article <i class="fas fa-arrow-right text-[10px]"></i>
+                                </button>
+                                ${isAdminLoggedIn ? `
+                                    <div class="flex space-x-2">
+                                        <button onclick="openEditPostModal('${hero.id}')" class="text-gray-400 hover:text-blue-500 p-1 text-xs"><i class="fas fa-edit"></i></button>
+                                        <button onclick="openDeleteModal('${hero.id}')" class="text-gray-400 hover:text-red-500 p-1 text-xs"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Grid Cards
+            const remaining = filtered.slice(1);
+            gridContainer.innerHTML = '';
+
+            remaining.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-white dark:bg-darkCard rounded-2xl border border-gray-200 dark:border-darkBorder overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col justify-between group';
+                card.innerHTML = `
+                    <div>
+                        <div class="relative h-48 overflow-hidden bg-gray-100 dark:bg-darkBg">
+                            <img src="${item.image || fallbackImg}" onerror="this.src='${fallbackImg}'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-gray-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
+                                ${item.category}
+                            </span>
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center space-x-2 text-[11px] text-gray-400 mb-2">
+                                <span>${item.date}</span>
+                                <span>•</span>
+                                <span>${item.readTime || '4 min'}</span>
+                            </div>
+                            <h3 onclick="readArticle('${item.id}')" class="font-bold text-base text-gray-900 dark:text-white group-hover:text-brand-500 dark:group-hover:text-accent-400 transition cursor-pointer line-clamp-2 leading-snug mb-2">
+                                ${item.title}
+                            </h3>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
+                                ${item.excerpt}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-gray-50/50 dark:bg-darkBg/30 border-t border-gray-100 dark:border-darkBorder flex items-center justify-between">
+                        <button onclick="readArticle('${item.id}')" class="text-xs font-bold text-brand-600 dark:text-accent-400 hover:underline">
+                            Read Full Story
+                        </button>
+                        ${isAdminLoggedIn ? `
+                            <div class="flex space-x-2">
+                                <button onclick="openEditPostModal('${item.id}')" class="text-gray-400 hover:text-blue-500 text-xs"><i class="fas fa-edit"></i></button>
+                                <button onclick="openDeleteModal('${item.id}')" class="text-gray-400 hover:text-red-500 text-xs"><i class="fas fa-trash"></i></button>
+                            </div>
+                        ` : `
+                            <span class="text-[11px] text-gray-400"><i class="far fa-thumbs-up mr-1"></i> ${item.likes || 0}</span>
+                        `}
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+
+            // Popular Sidebar
+            popularContainer.innerHTML = '';
+            articles.slice(0, 4).forEach((item, idx) => {
+                const pop = document.createElement('div');
+                pop.className = 'py-3 flex items-start space-x-3 cursor-pointer group';
+                pop.onclick = () => readArticle(item.id);
+                pop.innerHTML = `
+                    <span class="text-xl font-black text-brand-500 dark:text-accent-400 font-mono opacity-60">0${idx + 1}</span>
+                    <div class="flex-1">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">${item.category}</span>
+                        <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200 group-hover:text-brand-500 dark:group-hover:text-accent-400 leading-snug line-clamp-2 mt-0.5">
+                            ${item.title}
+                        </h4>
+                    </div>
+                `;
+                popularContainer.appendChild(pop);
+            });
+        }
+
+        function openCreatePostModal() {
+            document.getElementById('edit-post-id').value = '';
+            document.getElementById('post-editor-form').reset();
+            document.getElementById('post-editor-title').innerHTML = '<i class="fas fa-pen-nib text-brand-500 mr-2"></i> Write New Article';
+            openModal('post-editor-modal');
+        }
+
+        function openEditPostModal(id) {
+            const post = articles.find(a => a.id === id);
+            if (!post) return;
+
+            document.getElementById('edit-post-id').value = post.id;
+            document.getElementById('post-input-title').value = post.title;
+            document.getElementById('post-input-category').value = post.category;
+            document.getElementById('post-input-author').value = post.author;
+            document.getElementById('post-input-image').value = post.image;
+            document.getElementById('post-input-tags').value = post.tags ? post.tags.join(', ') : '';
+            document.getElementById('post-input-excerpt').value = post.excerpt;
+            document.getElementById('post-input-content').value = post.content;
+
+            document.getElementById('post-editor-title').innerHTML = '<i class="fas fa-edit text-brand-500 mr-2"></i> Edit Article Details';
+            openModal('post-editor-modal');
+        }
+
+        function handleSaveArticle(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-post-id').value;
+            const title = document.getElementById('post-input-title').value.trim();
+            const category = document.getElementById('post-input-category').value;
+            const author = document.getElementById('post-input-author').value.trim();
+            const image = document.getElementById('post-input-image').value.trim();
+            const tags = document.getElementById('post-input-tags').value.split(',').map(t => t.trim());
+            const excerpt = document.getElementById('post-input-excerpt').value.trim();
+            const content = document.getElementById('post-input-content').value.trim();
+
+            const words = content.split(/\s+/).length;
+            const readTime = Math.ceil(words / 200) + ' min read';
+
+            if (id) {
+                // Update
+                const idx = articles.findIndex(a => a.id === id);
+                if (idx !== -1) {
+                    articles[idx].title = title;
+                    articles[idx].category = category;
+                    articles[idx].author = author;
+                    articles[idx].image = image || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80';
+                    articles[idx].tags = tags;
+                    articles[idx].excerpt = excerpt;
+                    articles[idx].content = content;
+                    articles[idx].readTime = readTime;
+                }
+            } else {
+                // Create
+                const newPost = {
+                    id: 'post-' + Date.now(),
+                    title,
+                    category,
+                    author,
+                    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    readTime,
+                    image: image || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80',
+                    excerpt,
+                    content,
+                    tags,
+                    likes: 0,
+                    comments: []
+                };
+                articles.unshift(newPost);
+            }
+
+            saveArticles();
+            renderArticles();
+            closeModal('post-editor-modal');
+            showToast('Article saved successfully!');
+        }
+
+        function openDeleteModal(id) {
+            document.getElementById('delete-target-id').value = id;
+            openModal('delete-modal');
+        }
+
+        function confirmDeleteArticle() {
+            const id = document.getElementById('delete-target-id').value;
+            articles = articles.filter(a => a.id !== id);
+            saveArticles();
+            renderArticles();
+            closeModal('delete-modal');
+            showToast('Article deleted permanently.', 'delete');
+        }
+
+        // FULL READ VIEW & IN-ARTICLE AD INTEGRATION
+        function readArticle(id) {
+            const post = articles.find(a => a.id === id);
+            if (!post) return;
+
+            const body = document.getElementById('read-post-body');
+            const fallbackImg = 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80';
+
+            // Check if In-Article Ad Slot is active
+            const inArticleSlot = adSlots.find(s => s.placement === 'in_article_banner' && s.enabled);
+            let inArticleAdHtml = '';
+            if (inArticleSlot) {
+                if (inArticleSlot.type === 'script' && inArticleSlot.htmlCode) {
+                    inArticleAdHtml = inArticleSlot.htmlCode;
+                } else {
+                    inArticleAdHtml = `
+                        <div class="my-6">
+                            <a href="${inArticleSlot.linkUrl || '#'}" target="_blank" class="block w-full overflow-hidden rounded-2xl border border-gray-200 dark:border-darkBorder shadow-sm relative">
+                                <img src="${inArticleSlot.imgUrl}" class="w-full h-auto max-h-32 object-cover">
+                                <span class="absolute top-1 right-1 bg-black/60 text-white font-mono text-[9px] px-1.5 py-0.5 rounded">SPONSORED</span>
+                            </a>
+                        </div>
+                    `;
+                }
+            }
+
+            const commentsHtml = (post.comments || []).map(c => `
+                <div class="bg-gray-50 dark:bg-darkBg p-3.5 rounded-xl text-xs space-y-1 border border-gray-100 dark:border-darkBorder">
+                    <div class="flex justify-between font-bold text-gray-800 dark:text-gray-200">
+                        <span>${c.name}</span>
+                        <span class="text-[10px] text-gray-400 font-normal">${c.date}</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">${c.text}</p>
+                </div>
+            `).join('');
+
+            body.innerHTML = `
+                <div class="space-y-5">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="bg-brand-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                            ${post.category}
+                        </span>
+                        <span class="text-xs text-gray-400"><i class="far fa-clock mr-1"></i> ${post.readTime || '5 min'}</span>
+                    </div>
+
+                    <h1 class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white leading-tight">
+                        ${post.title}
+                    </h1>
+
+                    <div class="flex items-center justify-between border-b border-gray-100 dark:border-darkBorder pb-4 text-xs text-gray-500 dark:text-gray-400">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-gray-800 dark:text-gray-200">${post.author}</span>
+                            <span>•</span>
+                            <span>${post.date}</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="likeArticle('${post.id}')" class="hover:text-brand-500 transition flex items-center gap-1 font-bold">
+                                <i class="far fa-thumbs-up text-sm"></i> <span id="like-cnt-${post.id}">${post.likes || 0}</span>
+                            </button>
+                            <button onclick="shareArticle('${post.title}')" class="hover:text-brand-500 transition"><i class="fas fa-share-alt"></i> Share</button>
+                        </div>
+                    </div>
+
+                    <div class="w-full h-64 sm:h-80 bg-gray-100 dark:bg-darkBg rounded-2xl overflow-hidden my-4">
+                        <img src="${post.image || fallbackImg}" onerror="this.src='${fallbackImg}'" class="w-full h-full object-cover">
+                    </div>
+
+                    <!-- DYNAMIC IN-ARTICLE AD SLOT -->
+                    ${inArticleAdHtml}
+
+                    <div class="text-sm sm:text-base text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line space-y-4">
+                        ${post.content}
+                    </div>
+
+                    <!-- TAGS -->
+                    <div class="flex flex-wrap gap-2 pt-4">
+                        ${(post.tags || []).map(t => `<span class="bg-gray-100 dark:bg-darkBg text-gray-600 dark:text-gray-400 text-[11px] font-medium px-2.5 py-1 rounded-lg">#${t}</span>`).join('')}
+                    </div>
+
+                    <!-- COMMENTS SECTION -->
+                    <div class="border-t border-gray-100 dark:border-darkBorder pt-6 mt-6 space-y-4">
+                        <h4 class="text-base font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
+                            <i class="far fa-comments text-brand-500"></i> Reader Discussion (${(post.comments || []).length})
+                        </h4>
+
+                        <div class="space-y-3">
+                            ${commentsHtml || '<p class="text-xs text-gray-400 italic">No comments yet. Be the first to start the conversation!</p>'}
+                        </div>
+
+                        <!-- Comment Form -->
+                        <form onsubmit="handleAddComment(event, '${post.id}')" class="space-y-2 pt-2">
+                            <input type="text" id="comment-name-${post.id}" required placeholder="Your Name & Location..." class="w-full bg-gray-50 dark:bg-darkBg border border-gray-200 dark:border-darkBorder text-xs rounded-xl px-3 py-2 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-500">
+                            <textarea id="comment-text-${post.id}" rows="2" required placeholder="Write a thoughtful comment..." class="w-full bg-gray-50 dark:bg-darkBg border border-gray-200 dark:border-darkBorder text-xs rounded-xl px-3 py-2 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-brand-500"></textarea>
+                            <button type="submit" class="bg-brand-600 text-white text-xs px-4 py-2 rounded-xl font-bold hover:bg-brand-700 transition">Post Comment</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            openModal('read-post-modal');
+        }
+
+        function likeArticle(id) {
+            const post = articles.find(a => a.id === id);
+            if (post) {
+                post.likes = (post.likes || 0) + 1;
+                saveArticles();
+                const elem = document.getElementById(`like-cnt-${id}`);
+                if (elem) elem.textContent = post.likes;
+                showToast('Article liked!');
+            }
+        }
+
+        function shareArticle(title) {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showToast('Article URL copied to clipboard!');
+            }).catch(() => {
+                showToast('Article shared!');
+            });
+        }
+
+        function handleAddComment(e, postId) {
+            e.preventDefault();
+            const nameInput = document.getElementById(`comment-name-${postId}`);
+            const textInput = document.getElementById(`comment-text-${postId}`);
+            const post = articles.find(a => a.id === postId);
+
+            if (post) {
+                if (!post.comments) post.comments = [];
+                post.comments.push({
+                    name: nameInput.value.trim(),
+                    text: textInput.value.trim(),
+                    date: 'Just now'
+                });
+                saveArticles();
+                readArticle(postId);
+                showToast('Comment posted!');
+            }
+        }
+
+        function handleSubscribe(e) {
+            e.preventDefault();
+            const email = document.getElementById('subscribe-email').value;
+            showToast(`Thank you! ${email} subscribed to Imran Blogs.`);
+            document.getElementById('subscribe-email').value = '';
+        }
+
+        // UTILITY HELPERS
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.textContent = msg;
+            if (type === 'delete') {
+                toastIcon.className = 'fas fa-trash-alt text-red-400 text-lg';
+            } else {
+                toastIcon.className = 'fas fa-check-circle text-emerald-400 text-lg';
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
